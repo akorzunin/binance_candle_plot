@@ -24,8 +24,8 @@ LINE_COLOR = [
     '#8c3d9e',
     '#0df2c9',]
 
-MA_1 = 3
-MA_2 = 35
+MA_1 = 7
+MA_2 = 25
 MA_3 = 100
 
 FLAG_OPACITY = 0.6
@@ -150,7 +150,7 @@ def find_intersections(arr1, arr2):
 def remap(x: float, max_val: float, min_val: float, out_min: float, out_max: float ):
     return (x - min_val) * (out_max - out_min) / (max_val - min_val) + out_min
 # find intersections MA_2 and MA_3
-MA_ints = find_intersections(mov_avg[1], mov_avg[2],)
+MA_ints = find_intersections(mov_avg[0], mov_avg[1],)
 
 
 # %%
