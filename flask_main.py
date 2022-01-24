@@ -14,7 +14,7 @@ def read_file_db()-> str:
 def get_graph():
     graph_file = candle_plot.CandlePlot.make_graph(
         pair = 'RVNUSDT',
-        interval = '5m',
+        interval = '1m',
         limit = 1000,
         GO_HEIGHT=900,
         GO_WIDTH=1900,
@@ -67,4 +67,4 @@ def admin():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
