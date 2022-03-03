@@ -12,5 +12,11 @@
         "*_test.py"
     ],
     "python.testing.pytestEnabled": false,
-    "python.testing.unittestEnabled": true
+    "python.testing.unittestEnabled": true,
+    "python.formatting.provider": "black",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#072D5A",
+        "titleBar.activeBackground": "#093F7E",
+        "titleBar.activeForeground": "#F7FAFE"
+    }
 }

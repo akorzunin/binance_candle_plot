@@ -7,14 +7,9 @@ import logging
 class AlgMa():
     '''Calculate 3 moving average arrays from given dataframe'''
     @staticmethod
-    def alg_main(df: DataFrame, MA_1=7, MA_2=25, MA_3=100, **kwargs) -> list[DataFrame, DataFrame, DataFrame]:
+    def alg_main(df: DataFrame, MA_list: tuple, **kwargs) -> list[DataFrame, DataFrame, DataFrame]:
         '''Calculate moving average lines'''
-        mov_avg = [[], [], []]
-        mov_avg[0] = df.rolling(window = MA_1).mean()
-        mov_avg[1] = df.rolling(window = MA_2).mean()
-        mov_avg[2] = df.rolling(window = MA_3).mean()
-
-        return mov_avg 
+        return [df.rolling(window = i).mean() for i in MA_list] 
     # @staticmethod
     # def alg_to_df(data: tuple, MA_1=7, MA_2=25, MA_3=100, **kwargs):
 
@@ -28,20 +23,21 @@ class AlgMa():
         for num, i in enumerate(date_df):
             # if num == 999: print(num)
             if num == 0: next(enumerate(date_df))
-            else:    
+            else:  
+                # TODO numba_intersection() calc it faster
                 A1 = mov_avg1[num-1]
                 A2 = mov_avg1[num] 
                 B1 = mov_avg2[num-1]
                 B2 = mov_avg2[num] 
-                try:
-                    if (A1 > B1) and (B2 > A2):
-                        intersections.append(MA_point(i, mov_avg1[num], 'fall'))
-                        logging.debug(f'Intersection found: {(intersections[-1])}')
-                    if (A1 < B1) and (B2 < A2):
-                        intersections.append(MA_point(i, mov_avg1[num], 'raise'))
-                        logging.debug(f'Intersection found: {(intersections[-1])}')
-                except IndexError as e:
-                    logging.debug(e)
+                # try:
+                if (A1 > B1) and (B2 > A2):
+                    intersections.append(MA_point(i, mov_avg1[num], 'fall'))
+                    logging.debug(f'Intersection found: {(intersections[-1])}')
+                if (A1 < B1) and (B2 < A2):
+                    intersections.append(MA_point(i, mov_avg1[num], 'raise'))
+                    logging.debug(f'Intersection found: {(intersections[-1])}')
+                # except IndexError as e:
+                    # logging.debug(e)
         try:
             logging.debug(f'Last intersection: {intersections[-1]}')
         except IndexError as e:
@@ -69,8 +65,8 @@ if __name__ == '__main__':
     df = pd.DataFrame()
     df['Test'] = [randint(0, 100) for i in range(1000)]
     # print(
-    MA_lines = AlgMa.alg_main(df['Test'], MA_3=50)
-
+    MA_lines = AlgMa.alg_main(df['Test'], MA_list=(7, 25, 100))
+    print(MA_lines)
     # find intersections
     df['Time'] = [datetime.fromtimestamp(i*10**6) for i in range(1000)]
     p = AlgMa.find_intersections(df['Time'], MA_lines[1], MA_lines[2])

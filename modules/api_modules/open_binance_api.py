@@ -12,6 +12,12 @@ class OpenBinanceApi():
         return json.loads(resource.text)
 
     @staticmethod
+    def server_time() -> int:
+        r = requests.get('https://api.binance.com/api/v1/time')
+        return json.loads(r.text)['serverTime']
+
+
+    @staticmethod
     def get_df(pair: str, interval: str, limit: int) -> DataFrame:
         data = OpenBinanceApi.get_data(pair, interval, limit)
         Date_list = []
