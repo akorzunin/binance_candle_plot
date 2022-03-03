@@ -26,7 +26,7 @@ class WssThread(object):
             logging.error(error)
             
         def on_close(ws, close_status_code, close_msg):
-            logging.info("### closed ###")
+            logging.info("### wss stream closed ###")
         # disable massages from wss stream to console
         websocket.enableTrace(False)
         self.ws = websocket.WebSocketApp(

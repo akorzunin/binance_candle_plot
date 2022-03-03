@@ -2,14 +2,15 @@
 быстро вызвать из algma.py  функции и передать данные из низ в trade.py
 '''
 
-from collections import namedtuple
 import json
-from typing import Tuple
-import pandas as pd
-from pandas.core.frame import DataFrame
-from alg_ma import AlgMa
-from datetime import datetime
 import logging
+from collections import namedtuple
+from datetime import datetime
+from typing import Tuple
+
+import pandas as pd
+from alg_ma import AlgMa
+from pandas.core.frame import DataFrame
 
 
 class AlgHandler(object): 
@@ -18,6 +19,7 @@ class AlgHandler(object):
     #    self.LOG_FILE_PATH = kwargs.pop('log_path', './test_log.txt')
     #    self.pair = kwargs.pop('pair', 'RVNUSDT')
         self.df = kwargs.get('df', pd.DataFrame())
+        self.MA_list = kwargs.get('MA_list', (7, 25, 100))
         self.ALLOW_SAME_RESPONSE = kwargs.get('ALLOW_SAME_OP', False)
         self.MA_lines = None
         self.crosses = None
@@ -31,13 +33,13 @@ class AlgHandler(object):
         '''update MAlines and crosses     '''
         # self._read_data()
         # select column w/ data to get moving average values from
-        self.MA_lines = AlgMa.alg_main(self.df[val_col], )
+        self.MA_lines = AlgMa.alg_main(self.df[val_col], self.MA_list) #implement custom MA_lines from claa constructor
         self.crosses = AlgMa.find_intersections(
             # select cloumnt w/ time data
             date_df=self.df[time_col], 
             # select lines to calculate intersection with
-            mov_avg1=self.MA_lines[1].to_list(), 
-            mov_avg2=self.MA_lines[2].to_list(),
+            mov_avg1=self.MA_lines[1].to_numpy(), 
+            mov_avg2=self.MA_lines[2].to_numpy(),
             ) 
         return self.MA_lines, self.crosses
 
@@ -78,9 +80,9 @@ class AlgHandler(object):
 
 
 if __name__ == '__main__':
+    import math
     from datetime import datetime
     from random import randint
-    import math
     df = pd.DataFrame()
     df['Test'] = [math.sin(i) for i in range(1000)]
     # df['Test'] = [i if i > 500 else 500 - i for i in range(1000) ]
