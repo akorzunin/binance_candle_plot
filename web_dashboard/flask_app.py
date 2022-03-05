@@ -5,6 +5,7 @@ from flask import request
 
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 PWD = os.getenv("PWD")
 import sys
@@ -12,6 +13,7 @@ sys.path.insert(1, PWD + "\\modules")
 
 app = Flask(__name__)
 # Import Dash application
+from api_modules.open_binance_api import OpenBinanceApi
 from realtime_dashboard import init_dashboard as init_rt_dashboard
 from trading_dashboard import init_dashboard as init_trd_dashboard
 
@@ -51,11 +53,34 @@ app = init_trd_dashboard(
 
 @app.route('/')
 def home():
-    # return '123'
     return render_template(
         '/index.html', content=datetime.now(), 
         # url_for,
     )
+
+@app.route('/template')
+def template_route():
+    return render_template(
+        '/main_template.html',  
+        # url_for,
+    )
+
+@app.route('/data_dashboard')
+def data_dashboard():
+    df = OpenBinanceApi.get_df(
+            pair = 'RVNUSDT', # pair
+            interval = '1m', # Interval
+            limit = 1000,   # limit
+    )
+    return render_template(
+        '/data_dashboard.html',  
+        column_names=df.columns.values, 
+        row_data=list(df.values.tolist()),
+        zip=zip,
+        # url_for,
+    )
+
+
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:

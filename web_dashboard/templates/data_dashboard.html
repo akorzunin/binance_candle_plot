@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{%block title%} Home  {%endblock%}
+{%block content%} 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/data_dashboard.css') }}">
+<div class="container-fluid">
+    
+    <section class="section">
+        <div class="block_5">
+            <div class="block_1">
+                <div class="block_2">
+                    <h4>Paper trader info</h4>
+                    <ul class="table_small">
+                        <li>RVN</li>
+                        <li>USD</li>
+                        <li>Fee</li>
+                        <li>0000.00</li>
+                        <li>0000.00</li>
+                        <li>0000.00</li>
+                    </ul>
+                </div>
+    
+                <div class="block_2">
+                    <h4>Last MA line values</h4>
+                    <ul class="table_small">
+                        <li>MA 7</li>
+                        <li>MA 25</li>
+                        <li>MA 100</li>
+                        <li>0000.00</li>
+                        <li>0000.00</li>
+                        <li>0000.00</li>
+                    </ul>
+                </div>
+            
+            </div>
+            <div class="block_4">
+                <h2 class="sticky_label">Trading data</h2>
+                
+                <table class="table">
+                    <tr class="sticky_cloumns">
+                        {% for col in column_names %}
+                        <th>{{col|capitalize}}</th>
+                        {% endfor %}
+                    </tr>
+                    {% for row in row_data %}
+                    <tr>
+                        {% for col, row_ in zip(column_names, row) %}
+                        <td>{{row_}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            
+        </div>
+        <div class="block_6" >
+            <h2 class="sticky_label">Current stock data</h2>
+            <table class="table">
+                <tr class="sticky_cloumns">
+                    {% for col in column_names %}
+                    <th>{{col|capitalize}}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in row_data %}
+                <tr>
+                    {% for col, row_ in zip(column_names, row) %}
+                    <td>{{row_}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            
+            </table>
+        </div>
+    </section>
+</div>
+
+
+{%endblock%}
