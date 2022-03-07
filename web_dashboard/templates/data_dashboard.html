@@ -10,7 +10,7 @@
                 <div class="block_2">
                     <h4>Paper trader info</h4>
                     <ul class="table_small">
-                        <li>RVN</li>
+                        <li id="main_currency_label">RVN</li>
                         <li>USD</li>
                         <li>Fee</li>
                         <li>0000.00</li>
@@ -73,5 +73,7 @@
     </section>
 </div>
 
-
 {%endblock%}
+{%block script%}
+    <script src="{{url_for('static', filename='scripts/data_dashboard.js')}}"></script>
+{% endblock %}

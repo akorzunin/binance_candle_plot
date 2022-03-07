@@ -16,6 +16,7 @@ app = Flask(__name__)
 from api_modules.open_binance_api import OpenBinanceApi
 from realtime_dashboard import init_dashboard as init_rt_dashboard
 from trading_dashboard import init_dashboard as init_trd_dashboard
+from dash_data_dashboard import init_dashboard as init_ddd_dashboard
 
 # render dashboard template
 from jinja2 import Environment, FileSystemLoader
@@ -46,6 +47,15 @@ app = init_trd_dashboard(
     html_layout=template.render(
         content='_',
         page_title='Trading dashboard',
+        **defaults,
+        )
+    )
+app = init_ddd_dashboard(
+    app,
+    # dashboard template content
+    html_layout=template.render(
+        content='_',
+        page_title='dash_data_dashboard',
         **defaults,
         )
     )

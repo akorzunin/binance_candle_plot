@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{%block title%} {{page_title}} {%endblock%}
+{%block content%}
+<style>
+
+</style>
+<div class="container-fluid">
+    {{ "{%app_entry%}" }}
+    <footer>
+        {{ "{%config%}" }}
+        {{ "{%scripts%}" }}
+        {{ "{%renderer%}" }}
+    </footer>
+</div>
+{%endblock%}
