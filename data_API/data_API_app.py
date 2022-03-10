@@ -76,19 +76,19 @@ async def change_trade_data(new_df: InputData):
     
     return {"trade_data": DashboardModel.trade_data.to_json()}
 
-@app.get("/df")
-async def get_df():
+@app.get("/stock_data")
+async def get_stock_data():
     try:
-        return {"df": DashboardModel.df.to_json()}
+        return {"stock_data": DashboardModel.stock_data.to_json()}
     except AttributeError as e: 
         raise HTTPException(status_code=404, detail="Item not found") from e
 
-@app.post("/df")
+@app.post("/stock_data")
 async def change_df(new_df: InputData):
 
-    DashboardModel.df = pd.read_json(new_df.new_item)
+    DashboardModel.stock_data = pd.read_json(new_df.new_item)
     
-    return {"df": DashboardModel.df.to_json()}
+    return {"stock_data": DashboardModel.stock_data.to_json()}
 
 @app.get("/p_trdr")
 async def get_p_trdr():

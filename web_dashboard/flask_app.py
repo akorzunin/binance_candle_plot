@@ -10,6 +10,7 @@ load_dotenv()
 PWD = os.getenv("PWD")
 import sys
 sys.path.insert(1, PWD + "\\modules")
+sys.path.insert(1, PWD )
 
 app = Flask(__name__)
 # Import Dash application
@@ -21,13 +22,18 @@ from dash_data_dashboard import init_dashboard as init_ddd_dashboard
 # render dashboard template
 from jinja2 import Environment, FileSystemLoader
 
+from data_API.data_API_wrapper import DataApiWrapper
+
 # dict w/ common data to be rendered in templates
 defaults = {
     # 'members': members,
     # 'folder_content_html': folder_content_html,
     # 'url_for': url_for,
 }
-
+endpoint = 'http://192.168.1.125:8000'
+data_API = DataApiWrapper(
+    endpoint=endpoint
+)
 env = Environment(loader=FileSystemLoader(f'{PWD}/web_dashboard/templates'))
 template = env.get_template('dashboard.html')
 

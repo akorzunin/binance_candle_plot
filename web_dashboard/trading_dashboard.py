@@ -12,10 +12,17 @@ load_dotenv()
 PWD = os.getenv("PWD")
 import sys
 sys.path.insert(1, f'{PWD}\\modules')
+sys.path.insert(1, PWD)
 
 from api_modules.open_binance_api import OpenBinanceApi
 from plot_modules.candle_plot import CandlePlot
 from dash.exceptions import PreventUpdate
+from data_API.data_API_wrapper import DataApiWrapper
+
+endpoint = 'http://192.168.1.125:8000'
+data_API = DataApiWrapper(
+    endpoint=endpoint
+)
 
 def get_fig():
     df = OpenBinanceApi.get_df(

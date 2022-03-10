@@ -235,7 +235,8 @@ class CandlePlot():
                 yref='paper', 
                 showarrow=False, 
                 xanchor='left', 
-                text=f'{i.type}: {round(i.amount, 2)} {rvn_usd(i.type)} {round(get_price(i), 4)}', # ex: sell: 10 USD price: 0.99995 // {i.type}: {i.amount} {i.main/sec currency label} {i.price}
+                # TODO fix _6 problem it have to be _amount or amount or any reasonable name NOT _6 i dunno how it wokrs anymore
+                text=f'{i.type}: {round(i._6, 2)} {rvn_usd(i.type)} {round(get_price(i), 4)}', # ex: sell: 10 USD price: 0.99995 // {i.type}: {i.amount} {i.main/sec currency label} {i.price}
                 bgcolor='red' if i.type == 'buy' else 'green') for i in trade_flags_],
             hovermode='x unified',
         )
@@ -326,7 +327,7 @@ class CandlePlot():
                 # verbose description when hover mouse on annotations
                 hovertext=f'''[PROFIT] rel: {round(i.profit_abs, 4)
                     },abs: {i.profit_rel
-                    }%, amount: {round(i.amount, 2)}''',
+                    }%, amount: {round(i._6, 2)}''',
                 textangle=-45,
             ) for i in trade_data.itertuples(name='Row', index=False)
             ]

@@ -1,5 +1,8 @@
 
 
+import logging
+
+
 class StopLoss(object): 
     '''docstring for StopLoss'''
     def __init__(self, **kwargs):
@@ -11,7 +14,7 @@ class StopLoss(object):
         trade_data = kwargs.pop('trade_data', None)
         p_trdr = kwargs.pop('p_trdr', None)
         row = kwargs.pop('row', None)
-        # stop_loss_trade_flag = kwargs.pop('stop_loss_trade_flag', None)
+        stop_loss_trade_flag = kwargs.pop('stop_loss_trade_flag', None)
 
         try:
             prev_buy = trade_data.iloc[-1]['buy_price']
@@ -29,15 +32,17 @@ class StopLoss(object):
             # logging.info(f"[STOP LOSS]{r(percent_loss)=} abs_loss{r(curr_buy_pr-prev_buy)} {r(prev_buy)=} {r(curr_buy_pr)=} {row['date_created']}")
             # sell money
             p_trdr.trade(
-                            amount=p_trdr.main_currency_amount, 
-                            trade_type="SELL", 
-                            sell_price=float(row['open_']),
-                            buy_price=float(row['open_']),
-                        )
+                amount=p_trdr.main_currency_amount, 
+                trade_type="SELL", 
+                sell_price=float(row['open_']),
+                buy_price=float(row['open_']),
+            )
             trade_data.loc[len(trade_data)] = p_trdr.get_df(timestamp=row['date_created']).squeeze()
+            trade_data.loc[len(trade_data)-1, 'reason'] = 'stop_loss'
             stop_loss_trade_flag = True
             self._stop_loss_count += 1
-        else: stop_loss_trade_flag = False
+            logging.info('StopLoss trade here')
+        # else: stop_loss_trade_flag = False
 
         return stop_loss_trade_flag, trade_data
 
