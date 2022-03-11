@@ -1,4 +1,5 @@
 
+from dis import dis
 from tkinter.scrolledtext import ScrolledText
 import dash_bootstrap_components as dbc
 import dash
@@ -80,8 +81,22 @@ def init_dashboard(server, **kwargs):
                     html.H4('PaperTrader info'),
                     dash_table.DataTable(
                         id='tbl_p_trdr',
-                        data=df_p_trdr.to_dict('records'),
-                        columns=[{"name": i, "id": i} for i in df_p_trdr.columns], 
+                        columns=(
+                            {'name': 'Column 1', 'id': 'name'},
+                            {'name': 'Column 2', 'id': 'value'},
+                        ), 
+                        data=[
+                            {'name': 'RVN', 'value': '0000.00', },
+                            {'name': 'USD', 'value': '0000.00', },
+                            {'name': 'Fee', 'value': '0000.00', },
+                        ],
+                        # hide columns names
+                        css=[
+                            {
+                                'selector': 'tr:first-child',
+                                'rule': 'display: none',
+                            },
+                        ],
                     ),
                     ],
                     className='block_2',
@@ -91,8 +106,22 @@ def init_dashboard(server, **kwargs):
                     html.H4('Last MA line values'),
                     dash_table.DataTable(
                         id='tbl_MA_lines',
-                        data=df_p_trdr.to_dict('records'),
-                        columns=[{"name": i, "id": i} for i in df_p_trdr.columns], 
+                        columns=(
+                            {'name': 'Column 1', 'id': 'name'},
+                            {'name': 'Column 2', 'id': 'value'},
+                        ), 
+                        data=[
+                            {'name': 'MA 7', 'value': '0000.00', },
+                            {'name': 'MA 25', 'value': '0000.00', },
+                            {'name': 'MA 100', 'value': '0000.00', },
+                        ],
+                        # hide columns names
+                        css=[
+                            {
+                                'selector': 'tr:first-child',
+                                'rule': 'display: none',
+                            },
+                        ], 
                     ),
                     ],
                     className='block_2',
@@ -141,6 +170,7 @@ def init_dashboard(server, **kwargs):
             id='graph-update',
             interval=60*1000, # 60 seconds
             n_intervals = 0,
+            disabled=1,
         ),
     ],
     style=section_style,

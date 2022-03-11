@@ -18,38 +18,43 @@ from api_modules.open_binance_api import OpenBinanceApi
 from plot_modules.candle_plot import CandlePlot
 from dash.exceptions import PreventUpdate
 from data_API.data_API_wrapper import DataApiWrapper
-
+from utils.alg_utils import calculate_profit
 endpoint = 'http://192.168.1.125:8000'
 data_API = DataApiWrapper(
     endpoint=endpoint
 )
 
 def get_fig():
-    df = OpenBinanceApi.get_df(
-            pair = 'RVNUSDT', # pair
-            interval = '1m', # Interval
-            limit = 1000,   # limit
-    )   
+    # df = OpenBinanceApi.get_df(
+    #         pair = 'RVNUSDT', # pair
+    #         interval = '1m', # Interval
+    #         limit = 1000,   # limit
+    # )   
+    df = data_API.get_stock_data()
+    trade_data = data_API.get_trade_data()
+    trade_data = calculate_profit(trade_data)
     plot = CandlePlot(
         df=df,
-        open_col='Open',
-        close_col='Close',
-        low_col='Low',
-        high_col='High',
-        date_col='Date',    
+        open_col='open_',
+        close_col='close_',
+        low_col='low_',
+        high_col='high_',
+        date_col='date_created',
     )
+    MA_list = data_API.get_ma_lines()
 
     settings = {
         'candle_plot': 1,
-        'MA_lines': 0,
-        'add_trades': 0,
-        'add_profit': 0,
+        'MA_lines': 1,
+        'add_trades': 1,
+        'add_profit': 1,
         'profit_annotations': 0, 
         'amplitude': 0, 
         'MACD_lines': True, # to do
         'EMA_lines': True, # to do
     }
     # settings.update(kwargs)
+
 
     return plot.use_settings(
         settings=settings,
@@ -59,8 +64,8 @@ def get_fig():
         pair='RVNUSDT',
         interval='--',
         limit='no limit',
-        # MA_list=MA_list,
-        # trade_data=trade_data,
+        MA_list=MA_list,
+        trade_data=trade_data,
 
     )
 
@@ -140,7 +145,7 @@ def init_dashboard(server, **kwargs):
         ),
         dcc.Interval(
             id='graph-update',
-            interval=5*1000, #take time from interval 
+            interval=60*1000, #take time from interval 
             n_intervals = 0,
         ),
     ])
