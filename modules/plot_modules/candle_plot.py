@@ -1,4 +1,5 @@
 import copy
+import logging
 import os
 import random
 
@@ -206,8 +207,13 @@ class CandlePlot():
         rvn_usd = lambda x: 'RVN' if x == 'sell' else 'USD'
         get_price = lambda x: x.sell_price if x.type == 'sell' else x.buy_price
         def_map = lambda i: remap(i.buy_price if i.type == 'buy' else i.sell_price, max_val, min_val, 0, 1)
-
-        trade_flags_ = copy.deepcopy(trade_flags)
+        try:
+            trade_flags_ = copy.deepcopy(trade_flags)
+        except TypeError: 
+            # somehow got an error that cant copy a generator 
+            # but works fine w/ deepcopy in other cases
+            logging.debug('[CANDLE PLOT] NO deepcopy')
+            trade_flags_ = trade_data.itertuples(name='Row', index=False)
         fig.update_layout(
             legend=dict(
                 yanchor="top",
