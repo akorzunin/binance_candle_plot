@@ -154,13 +154,14 @@ class CandlePlot():
     def add_trades(self, fig, **kwargs):
         
         FLAG_OPACITY = kwargs.pop('FLAG_OPACITY', 0.6)
-         
+        
         # try to get MA_list from class variable
         # MA_list = self.MA_list
         #except Exception
         MA_list = kwargs.pop('MA_list', [0])# None
-           
+        
         df = self.df
+        assert len(df) > 1
         # in case we don't have MA values we need to calculate them
         try:
             mov_avg = self.mov_avg

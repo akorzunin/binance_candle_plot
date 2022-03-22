@@ -26,13 +26,13 @@ PWD = os.getenv('PWD')
 endpoint = 'http://192.168.1.125:8000'
 
 
-r = requests.post(f'{endpoint}/ma_lines', json=[7, 25, 99])
-re = r.json()
-if r.status_code == 200: logging.info('MA_lines OK')
+# r = requests.post(f'{endpoint}/ma_lines', json=[7, 25, 99])
+# re = r.json()
+# if r.status_code == 200: logging.info('MA_lines OK')
 
 
-trade_data = pd.read_csv(f'{PWD}/trade_data_raw.csv', index_col=0)
-df = pd.read_csv(f'{PWD}/df_raw.csv', index_col=0)
+trade_data = pd.read_csv(f'{PWD}/temp/trade_data_raw.csv', index_col=0)
+df = pd.read_csv(f'{PWD}/temp/df_raw.csv', index_col=0)
 
 # df = trade_data
 r = requests.post(f'{endpoint}/trade_data', json.dumps({'new_item': trade_data.to_json()}))

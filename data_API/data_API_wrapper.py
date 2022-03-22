@@ -32,7 +32,7 @@ class DataApiWrapper(object):
         else: return None 
 
     def update_ma_lines(self, MA_lines: tuple) -> bool:
-        r = requests.post(f'{endpoint}/ma_lines', json=MA_lines)
+        r = requests.post(f'{self.endpoint}/ma_lines', json=MA_lines)
 
         if r.status_code != 200:
             return False
@@ -40,7 +40,7 @@ class DataApiWrapper(object):
         return True
 
     def update_stock_data(self, df: pd.DataFrame) -> bool:
-        r = requests.post(f'{endpoint}/stock_data', json.dumps({'new_item': df.to_json()}))
+        r = requests.post(f'{self.endpoint}/stock_data', json.dumps({'new_item': df.to_json()}))
 
         if r.status_code != 200:
             return False
@@ -48,7 +48,7 @@ class DataApiWrapper(object):
         return True
 
     def update_trade_data(self, df: pd.DataFrame) -> bool:
-        r = requests.post(f'{endpoint}/trade_data', json.dumps({'new_item': df.to_json()}))
+        r = requests.post(f'{self.endpoint}/trade_data', json.dumps({'new_item': df.to_json()}))
 
         if r.status_code != 200:
             return False

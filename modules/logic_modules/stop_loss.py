@@ -16,13 +16,18 @@ class StopLoss(object):
         row = kwargs.pop('row', None)
         stop_loss_trade_flag = kwargs.pop('stop_loss_trade_flag', None)
 
+        open_col  = kwargs.pop('open_col', 'Open')
+        date_col = kwargs.pop('date_col', 'Date')
+
+        wss = kwargs.pop('wss', None)
+
         try:
             prev_buy = trade_data.iloc[-1]['buy_price']
             prev_op = trade_data.iloc[-1]['type']
         except IndexError: prev_buy = None
 
         if prev_buy is not None:
-            curr_buy_pr = float(row['open_'])
+            curr_buy_pr = float(row[open_col])
                     # percent_loss показывает на сколько изменилась цена отностительно последней покупки в процентах
             percent_loss = (curr_buy_pr - prev_buy)*100/prev_buy
         else: percent_loss = 0
@@ -31,17 +36,28 @@ class StopLoss(object):
         if percent_loss < self._STOP_LOSS_THRESHOLD and prev_op == 'buy':
             # logging.info(f"[STOP LOSS]{r(percent_loss)=} abs_loss{r(curr_buy_pr-prev_buy)} {r(prev_buy)=} {r(curr_buy_pr)=} {row['date_created']}")
             # sell money
-            p_trdr.trade(
-                amount=p_trdr.main_currency_amount, 
-                trade_type="SELL", 
-                sell_price=float(row['open_']),
-                buy_price=float(row['open_']),
-            )
-            trade_data.loc[len(trade_data)] = p_trdr.get_df(timestamp=row['date_created']).squeeze()
+            if wss is not None:
+                p_trdr.trade(
+                    amount=p_trdr.main_currency_amount, 
+                    trade_type="SELL", 
+                    sell_price=wss.get_data()['c'],
+                    buy_price=wss.get_data()['c'],
+                )
+            else:
+                p_trdr.trade(
+                    amount=p_trdr.main_currency_amount, 
+                    trade_type="SELL", 
+                    sell_price=float(row[open_col]),
+                    buy_price=float(row[open_col]),
+                )
+            try:
+                trade_data.loc[len(trade_data)] = p_trdr.get_df(timestamp=row[date_col].item().to_pydatetime()).squeeze()
+            except AttributeError:
+                trade_data.loc[len(trade_data)] = p_trdr.get_df(timestamp=row[date_col]).squeeze()
             trade_data.loc[len(trade_data)-1, 'reason'] = 'stop_loss'
             stop_loss_trade_flag = True
             self._stop_loss_count += 1
-            logging.info('StopLoss trade here')
+            # logging.info('StopLoss trade here')
         # else: stop_loss_trade_flag = False
 
         return stop_loss_trade_flag, trade_data

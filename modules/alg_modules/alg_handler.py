@@ -1,5 +1,5 @@
 '''
-быстро вызвать из algma.py  функции и передать данные из низ в trade.py
+take dataframe as input and return some analytics from it like trades 
 '''
 
 import json

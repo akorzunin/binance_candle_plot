@@ -66,9 +66,12 @@ if __name__ == "__main__":
         )
     w.start()
 
+    def foo(wss):
+        print(wss.get_data())
     try:
         while True:
-            print(w.get_data())
+            # print(w.get_data())
+            foo(w)
             time.sleep(0.1)
     finally:
         # close thread

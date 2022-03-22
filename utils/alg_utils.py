@@ -1,5 +1,7 @@
 import logging
-def calculate_profit(trade_data):
+from pandas.core.frame import DataFrame
+
+def calculate_profit(trade_data: DataFrame) -> DataFrame:
     for i, row in trade_data.iterrows():
     # try:
         if row['type'] == 'sell':
