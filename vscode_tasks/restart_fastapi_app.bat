@@ -1,0 +1,1 @@
+C:/Users/akorz/AppData/Local/Microsoft/WindowsApps/python3.9.exe c:/Users/akorz/Documents/binance_bot/binance_candle_plot/data_API/data_API_app.py

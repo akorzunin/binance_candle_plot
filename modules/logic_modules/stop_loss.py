@@ -29,7 +29,7 @@ class StopLoss(object):
         if prev_buy is not None:
             curr_buy_pr = float(row[open_col])
                     # percent_loss показывает на сколько изменилась цена отностительно последней покупки в процентах
-            percent_loss = (curr_buy_pr - prev_buy)*100/prev_buy
+            percent_loss = (curr_buy_pr - float(prev_buy))*100/float(prev_buy)
         else: percent_loss = 0
         # r = lambda x: round(x, 4)
 

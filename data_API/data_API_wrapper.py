@@ -36,7 +36,7 @@ class DataApiWrapper(object):
 
         if r.status_code != 200:
             return False
-        logging.info('MA_lines OK')
+        logging.debug('MA_lines OK')
         return True
 
     def update_stock_data(self, df: pd.DataFrame) -> bool:
@@ -44,7 +44,7 @@ class DataApiWrapper(object):
 
         if r.status_code != 200:
             return False
-        logging.info('stock_data OK')
+        logging.debug('stock_data OK')
         return True
 
     def update_trade_data(self, df: pd.DataFrame) -> bool:
@@ -52,7 +52,7 @@ class DataApiWrapper(object):
 
         if r.status_code != 200:
             return False
-        logging.info('trade_data OK')
+        logging.debug('trade_data OK')
         return True
 
 

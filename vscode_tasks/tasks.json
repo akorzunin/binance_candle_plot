@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "flask_app",
+            "type": "shell",
+            "command": "& c:/Users/akorz/Documents/binance_bot/binance_candle_plot/.vscode/restart_flask_app.bat",
+            "problemMatcher": [],
+            // "dependsOn": "fastapi_app",
+        },
+        {
+            "label": "close_flask_app",
+            "type": "shell",
+            "command": "curl http://192.168.1.125:5000/shutdown",
+            "problemMatcher": []
+        },
+        {
+            "label": "fastapi_app",
+            "type": "shell",
+            "command": "& c:/Users/akorz/Documents/binance_bot/binance_candle_plot/.vscode/restart_fastapi_app.bat",
+            "problemMatcher": []
+        },
+        {
+            "label": "populate_fastapi_app",
+            "type": "shell",
+            "command": "& C:/Users/akorz/AppData/Local/Microsoft/WindowsApps/python3.9.exe c:/Users/akorz/Documents/binance_bot/binance_candle_plot/tests/fake_data/populate_dataAPI.py",
+            "problemMatcher": []
+        },
+        {
+            "label": "update_reqs",
+            "type": "shell",
+            "command": "pipreqs --encoding utf-8 --force",
+            "problemMatcher": []
+        },
+        
+    ]
+}

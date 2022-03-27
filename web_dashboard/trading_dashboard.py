@@ -32,14 +32,21 @@ def get_fig():
     # )   
     df = data_API.get_stock_data()
     trade_data = data_API.get_trade_data()
-    trade_data = calculate_profit(trade_data)
+    if trade_data is not None:
+        trade_data = calculate_profit(trade_data)
+    
     plot = CandlePlot(
         df=df,
-        open_col='open_',
-        close_col='close_',
-        low_col='low_',
-        high_col='high_',
-        date_col='date_created',
+        # open_col='open_',
+        # close_col='close_',
+        # low_col='low_',
+        # high_col='high_',
+        # date_col='date_created',
+        open_col='Open',
+        close_col='Close',
+        low_col='Low',
+        high_col='High',
+        date_col='Date',
     )
     MA_list = data_API.get_ma_lines()
 

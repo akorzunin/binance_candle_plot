@@ -137,7 +137,7 @@ class TradeStrategy(object):
                 stop_loss_trade_flag = False
                 logging.warning('STOP LOSS cancel alg trade')
             # print(stop_loss_trade_flag)
-        return stop_loss.stop_loss_count, trade_data, p_trdr
+        return stop_loss.stop_loss_count, trade_data, p_trdr, stop_loss_trade_flag
 
     @staticmethod
     def trade_alg(stop_loss_trade_flag_, trade_data, p_trdr, row, cross_type, **kwargs):
@@ -155,14 +155,15 @@ class TradeStrategy(object):
                 if wss is not None:
                     p_trdr.trade(
                         amount=amount, 
-                        trade_type="SELL", 
+                        trade_type=trade_type, 
                         sell_price=wss.get_data()['c'],
                         buy_price=wss.get_data()['c'],
                     )
+                    logging.warning(f'[TRADE] {trade_type=}, price: {wss.get_data()}')
                 else:
                     p_trdr.trade(
                         amount=amount, 
-                        trade_type="SELL", 
+                        trade_type=trade_type, 
                         sell_price=float(row[open_col]),
                         buy_price=float(row[open_col]),
                     )

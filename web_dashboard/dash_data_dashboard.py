@@ -65,7 +65,7 @@ def init_dashboard(server, **kwargs):
     )
     # add web page layout to dash layout
     dash_app.index_string = html_layout
-    df = get_df()
+    df = pd.DataFrame([])
     df_p_trdr = pd.DataFrame(
         {
             'RVN': ['USD', 'Fee'],
@@ -170,7 +170,7 @@ def init_dashboard(server, **kwargs):
             id='graph-update',
             interval=60*1000, # 60 seconds
             n_intervals = 0,
-            disabled=1,
+            # disabled=1,
         ),
     ],
     style=section_style,
@@ -187,10 +187,16 @@ def init_dashboard(server, **kwargs):
         # if not value:
         #     raise PreventUpdate            
         df = data_API.get_stock_data()
-        for col in ['open_', 'high_', 'low_', 'close_']:
+        for col in ['Open', 'High', 'Low', 'Close']:
             df[col]=df[col].map('{:.4f}'.format)
 
-        df = df.loc[:, ['open_', 'high_', 'low_', 'close_','open_time', 'close_time', ]]
+        df = df.loc[:, ['Date', 'Open', 'High', 'Low', 'Close',  ]]
+        # for col in ['open_', 'high_', 'low_', 'close_']:
+        #     df[col]=df[col].map('{:.4f}'.format)
+
+        # df = df.loc[:, ['open_', 'high_', 'low_', 'close_','open_time', 'close_time', ]]
+        df = df[::-1]
+
         return df.to_dict('records'), [{"name": i, "id": i} for i in df.columns]
 
     @dash_app.callback(
@@ -208,6 +214,7 @@ def init_dashboard(server, **kwargs):
         for col in ['RVN', 'USD', '_amount']:
             df[col]=df[col].map('{:.1f}'.format)
         df = df.loc[:, ['type', 'sell_price', 'buy_price', 'fee', 'RVN', 'USD', '_amount', 'reason', 'timestamp', ]]
+        df = df[::-1]
         return df.to_dict('records'), [{"name": i, "id": i} for i in df.columns]
 
     return dash_app.server
